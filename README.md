@@ -1,7 +1,7 @@
 # TheRPG
 University small console game project
 
-##### Libraries needed
+### Libraries needed
 ```sh
 pip install InquirerPy keyboard
 ```
