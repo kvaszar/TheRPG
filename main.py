@@ -5,6 +5,7 @@ import time
 import keyboard
 
 MINIMAL_DELAY = .0001  # 0.1ms
+TRAVELLING_MERCHANT = 3
 
 
 def print_animated(text: str, delay_seconds: float):
@@ -39,9 +40,19 @@ class Entity:
     def lvlup(self) -> None:
         pass
 
+    def inc_stat(self, stat: str, amount: int) -> None:
+        match stat:
+            case "g":
+                self.g += amount
+            case "hp":
+                self.hp += amount
+            case "atk":
+                self.atk += amount
+            case "g":
+                self.g += amount
+
     # this violates several principles
     def fight(self, enemy) -> None:
-        system("clear")
         print_animated("Fight start!\n", .08)
         while (self.hp > 0 and enemy.hp > 0):
             time.sleep(.1)
@@ -51,6 +62,8 @@ class Entity:
             print_animated(f"Enemy attacks, \
                            {enemy.atk} damage dealt...\n", .05)
             self.hp -= enemy.atk
+            time.sleep(.1)
+            print_animated(f"{self.hp} hp left...\n", .05)
         if self.hp > 0:
             print_animated(f"You won, {self.hp} hp left\n", .05)
             self.lvlup()
@@ -64,6 +77,12 @@ class Entity:
             return False
         self.g -= amount
         return True
+
+    def get_stats(self) -> str:
+        return f"Hp: {self.hp},\
+                 Attack: {self.atk},\
+                 Intellegence: {self.intl},\
+                 Gold: {self.g}"
 
 
 # Characters
@@ -103,9 +122,10 @@ def load_story(path: str) -> list[list[str]]:
 def main() -> None:
     character: Entity = inquirer.select(
         message="Select a character",
-        choices=[{"name": HUMAN.name + " - " + HUMAN.desc, "value": HUMAN},
-                 {"name": DWARF.name + " - " + DWARF.desc, "value": DWARF},
-                 {"name": ELF.name + " - " + ELF.desc, "value": ELF}]
+        choices=[{"name": HUMAN.name + " - " + HUMAN.desc + f"({HUMAN.get_stats()})", "value": HUMAN},
+                 {"name": DWARF.name + " - " + DWARF.desc +
+                     f"({DWARF.get_stats()})", "value": DWARF},
+                 {"name": ELF.name + " - " + ELF.desc + f"({ELF.get_stats()})", "value": ELF}]
     ).execute()
     system("clear")
 
@@ -132,24 +152,43 @@ def main() -> None:
          "value": choice.split("<->")[0]}
         for choice in story_blocks[current_block][1]]
     selected_path = inquirer.select(message="", choices=choices).execute()
-    if selected_path == "fight goblin":
+    if selected_path == "fight-goblin":
         character.fight(GOBLIN)
-    elif selected_path == "fight slime":
+    elif selected_path == "fight-slime":
         character.fight(SLIME)
-    elif selected_path == "pay":
-        if not character.pay(5):
+    elif selected_path == "g-10":
+        if not character.pay(50):
             print_animated(
                 "Unfortunately, you didn't have enought gold\n", .05)
             character.fight(GOBLIN)
     else:
-        if character.intl <= 10:
+        if character.intl < 10:
             print_animated(
                 "Unfortunately, you wasn't able to outsmart the slime\n", .05)
             time.sleep(.1)  # 100ms
             character.fight(SLIME)
 
-    current_block = 3
-    system("clear")
+    current_block = TRAVELLING_MERCHANT
+    for part in story_blocks[current_block][0]:
+        print_animated(part + "\n", .05)  # 50ms (20ch/s)
+        time.sleep(.1)  # 100ms
+    print(story_blocks[current_block][1])
+    input()
+    choices = [
+        {"name": choice.split("<->")[1],
+         "value": choice.split("<->")[0]}
+        for choice in story_blocks[current_block][1]]
+    selected_path = inquirer.select(message="", choices=choices).execute()
+    if selected_path.startswith("g"):
+        amount = selected_path.split(" ").split("-")[1]
+        if character.pay(amount):
+            stat, amount = selected_path.split(" ").split("-")
+            character.inc_stat(stat, amount)
+    elif selected_path.startswith("fight"):
+        enemy = selected_path.split(" ").split("-")[1]
+        if enemy == "merchant":
+            pass
+
     print_animated("End of demo\n", .05)
     input("Press any key to win...")
 

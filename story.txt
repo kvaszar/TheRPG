@@ -10,22 +10,27 @@ right<->Take the right path, willing to risk the unknown in search of a shortcut
 You take the left path, hoping to avoid danger and find a safe route to the clearing. The path is well-trodden and easy to follow, and you make good time as you walk. However, as you round a bend in the path, you hear the sound of rustling leaves and twigs snapping. Suddenly, a goblin emerges from the underbrush, its eyes fixed on you with a hungry gleam.
 The goblin is small and wiry, but it's vicious and well-armed. You prepare to defend yourself, but you realize that you may be able to bribe the goblin instead.
 <ch>
-fight goblin<->Engage in combat with the goblin
-pay<->Offer the goblin a bribe in exchange for leaving you alone (Gold cost: 5 gold pieces)
+fight-goblin<->Engage in combat with the goblin
+g-10<->Offer the goblin a bribe in exchange for leaving you alone (50g)
 </>
 You take the right path, willing to risk the unknown in search of a shortcut. The path is overgrown and treacherous, and you have to push aside thick branches and fight your way through thorny underbrush. However, as you walk, you notice that the path is eerily quiet. You don't hear any birds singing or animals scurrying through the underbrush.
 After a few minutes of walking, you come across a small stream. The stream is crystal clear, and you can see fish swimming in the shallows. You follow the stream, using it as a guide as you make your way through the forest.
 As you walk, you notice that the stream leads you to a small waterfall. The waterfall is beautiful, and you can see a hidden cave behind the falling water. You enter the cave, and you find a small chamber filled with ancient artifacts and mysterious symbols.
 However, as you explore the chamber, you hear the sound of a slime approaching. The slime is a slow-moving creature, but it's deadly and corrosive. You realize that you may be able to outsmart the slime instead.
 <ch>
-fight slime<->Engage in combat with the slime
-flee<->Try to outsmart the slime by using your knowledge of the environment (Intellect check: DC 10)
+fight-slime<->Engage in combat with the slime
+flee<->Try to outsmart the slime by using your knowledge of the environment
 </>
 As you continue on your journey, you come across a traveling merchant who has set up a small stall in the middle of the forest. The merchant is a friendly old man who is eager to do business with you.
 "Ah, a brave adventurer, I see," the merchant says with a smile. "I have just the thing for you. Take a look at my wares and see if anything catches your eye."
 The merchant shows you a selection of goods, including a rare book, a magical potion, a set of fine clothes, and a small sack of gold coins.
 <ch>
-- Buy the rare book (Gold cost: 10 gold pieces, Intellect increase: +2)
-- Buy the magical potion (Gold cost: 5 gold pieces, temporary health boost)
-- Buy the fine clothes (Gold cost: 15 gold pieces, no benefits or penalties)
-- Take the small sack of gold coins (Gold gain: 5 gold pieces, no other benefits or penalties)
+g-10 int+2<->Buy the rare book (Gold cost: 10g intellect increase)
+g-5 hp+10<->Buy the magical potion (Gold cost: 5g health boost)
+g-15 hp+30<->Buy the fine clothes (Gold cost: 15g health boost)
+fight-merchant<->Take the small sack of gold coins
+flee<->Buy nothing
+</>
+Hello?
+<ch>
+a<->a
